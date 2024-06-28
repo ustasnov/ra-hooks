@@ -1,0 +1,68 @@
+.btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18pt;
+  border: 1px solid lightgray;
+}
+
+.notes-container {
+  width: 830px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.notes-header {
+  display: flex;
+}
+
+.notes-header-label {
+  font-size: 24pt;
+  margin-right: 20px;
+}
+
+.notes-list {
+  max-height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+.new-note-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.note-label {
+  font-size: 14pt;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.note-input {
+  width: 500px;
+  height: 170px;
+  display: flex;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #d3d3d3;
+}
+
+.note-text {
+  width: 455px;
+  font-size: 16px;
+  margin-right: 5px;
+  border-width: 0;
+  resize: none;
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+}
+
+.add-btn {
+  align-self: flex-end;
+}
