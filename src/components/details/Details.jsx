@@ -6,27 +6,28 @@ function Details(props) {
   const [data, setData] = new useState();
   const [loading, setLoading] = new useState(true);
 
-  const timestampRef = useRef();
+  const idRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
-      const timestamp = Date.now();
-      timestampRef.current = timestamp;
+      idRef.current = info?.id;
       try {
         const response = await fetch(`${import.meta.env.VITE_REACT_NOTES_URL}/${info.id}.json`);
         if (!response.ok) { throw new Error(response.statusText); }
         const details = await response.json();
-        if (timestampRef.current === timestamp) { setData(details); }
+        setData(details);
       } catch (e) {
-        console.erroe(`Ошибка доступа к серверу: ${e.message}`);
+        console.error(`Ошибка доступа к серверу: ${e.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    setLoading(true);
-    const timerId = setTimeout(fetchData, 300);
-    return () => clearTimeout(timerId);
+    if (idRef.current !== info.id) {
+      setLoading(true);
+      const timerId = setTimeout(fetchData, 300);
+      return () => clearTimeout(timerId);
+    }
   }, [info]);
 
   return (

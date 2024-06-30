@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./List.css";
 
 function List(props) {
@@ -6,17 +6,13 @@ function List(props) {
   const [loading, setLoading] = new useState(true);
   const { onClickHandler } = props;
 
-  const timestampRef = useRef();
-
   useEffect(() => {
     const fetchData = async () => {
-      const timestamp = Date.now();
-      timestampRef.current = timestamp;
       try {
         const response = await fetch(`${import.meta.env.VITE_REACT_NOTES_URL}/users.json`);
         if (!response.ok) { throw new Error(response.statusText); }
         const users = await response.json();
-        if (timestampRef.current === timestamp) { setState(users); }
+        setState(users);
       } catch (e) {
         console.error(`Ошибка доступа к серверу: ${e.message}`);
       } finally {
