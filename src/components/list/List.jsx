@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from "react";
 import "./List.css";
 
@@ -38,3 +39,7 @@ function List(props) {
 }
 
 export default List
+
+List.propTypes = {
+  onClickHandler: PropTypes.func
+}

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect, useRef } from "react";
 import "./Details.css";
 
@@ -45,3 +46,7 @@ function Details(props) {
 }
 
 export default Details;
+
+Details.propTypes = {
+  info: PropTypes.object
+}
