@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./Details.css";
 
 function Details(props) {
