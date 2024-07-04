@@ -3,28 +3,43 @@ import { useState, useEffect } from "react";
 import "./List.css";
 
 function List(props) {
-  const [data, setState] = new useState([]);
+  const [data, setData] = new useState(null);
   const [loading, setLoading] = new useState(true);
-  const { onClickHandler } = props;
+  const [error, setError] = useState(null);
+  const { url, onClickHandler } = props;
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch(`${import.meta.env.VITE_REACT_NOTES_URL}/users.json`);
-        if (!response.ok) { throw new Error(response.statusText); }
-        const users = await response.json();
-        setState(users);
-      } catch (e) {
-        console.error(`Ошибка доступа к серверу: ${e.message}`);
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`статус ответа сервера: ${response.status}`);
+        }
+
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        setError(error.message);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    setLoading(true);
-    const timerId = setTimeout(fetchData, 300);
-    return () => clearTimeout(timerId);
+    fetchData();
   }, []);
+
+  if (loading) return (
+    <div className="list-container">
+      <div>Loading...</div>
+    </div>);
+  if (error) return (
+    <div className="list-container">
+      <div>Error: {error}</div>
+    </div>);
 
   return (
     <div className="list-container">
@@ -41,5 +56,6 @@ function List(props) {
 export default List
 
 List.propTypes = {
+  url: PropTypes.string,
   onClickHandler: PropTypes.func
 }

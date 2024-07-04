@@ -3,38 +3,41 @@ import { useState, useEffect, useRef } from "react";
 import "./Details.css";
 
 function Details(props) {
-  const { info } = props;
   const [data, setData] = new useState();
   const [loading, setLoading] = new useState(true);
-
-  const idRef = useRef();
+  const [error, setError] = useState(null);
+  const { url } = props;
 
   useEffect(() => {
     const fetchData = async () => {
-      idRef.current = info?.id;
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch(`${import.meta.env.VITE_REACT_NOTES_URL}/${info.id}.json`);
-        if (!response.ok) { throw new Error(response.statusText); }
-        const details = await response.json();
-        setData(details);
-      } catch (e) {
-        console.error(`Ошибка доступа к серверу: ${e.message}`);
+        const response = await fetch(`${url}`);
+
+        if (!response.ok) {
+          throw new Error(`статус ответа сервера: ${response.status}`);
+        }
+
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        setError(error.message);
       } finally {
         setLoading(false);
       }
-    };
-
-    if (idRef.current !== info.id) {
-      setLoading(true);
-      const timerId = setTimeout(fetchData, 300);
-      return () => clearTimeout(timerId);
     }
-  }, [info]);
+
+    fetchData();
+  }, [url]);
+
+  if (loading) return <div className="user-details"><div>Loading...</div></div>;
+  if (error) return <div className="user-details"><div>Error: {error}</div></div>;
 
   return (
     <>
-      {loading && <div>Loading...</div>}
-      {data && !loading && <div className="user-details">
+      {data && <div className="user-details">
         <img className="details details-avatar" src={data.avatar} alt="Avatar"></img>
         <div className="details details-name">{data.name}</div>
         <div className="details details-city">City: {data.details.city}</div>
@@ -48,5 +51,5 @@ function Details(props) {
 export default Details;
 
 Details.propTypes = {
-  info: PropTypes.object
+  url: PropTypes.string
 }
